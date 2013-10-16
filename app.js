@@ -55,7 +55,7 @@ var list = redis.createClient();
 sub.subscribe("chatting");
 sub.on("message", function (channel, message) {
 	console.log(channel + ": message received on server from publish ");
-	//client.send(message);
+	client.send(message);
 });
 
 io.sockets.on('connection', function (client) {
@@ -74,7 +74,6 @@ io.sockets.on('connection', function (client) {
 		{
 			case "setUsername":
   				pub.publish("chatting", "A New Challenger Enters the Ring:" + msg.user);
-  				client.emit("chat","A New Challenger Enters the Ring:" + msg.user);
 				store.sadd("onlineUsers", msg.user);
   			break;
 			case "sendscore":
@@ -89,7 +88,6 @@ io.sockets.on('connection', function (client) {
   			break;
   			case "chat":
   				pub.publish("chatting", msg.message);
-  				client.emit("chat",msg.message);
   			break;
 			default:
   				console.log("!!!received unknown input msg!!!");
@@ -98,11 +96,10 @@ io.sockets.on('connection', function (client) {
 	client.on('disconnect',function () {
 		sub.quit();
 		pub.publish("chatting","Disconnected :" + client.id);
-		client.emit("chat","Disconnected :" + client.id);
 	});
 });
 
-function setUser(username, img, area, expire){
+/*function setUser(username, img, area, expire){
 	client.set(area+':users:' + username, username);
 	client.expire(area+':users:' + username, expire);
 	client.set(area+':users:' + username + ':img', img);
@@ -113,10 +110,9 @@ function setUser(username, img, area, expire){
 	client.sadd(area+':users', area+':users:' + username);
 	//add the set to the expire set
 	client.sadd('expireKeys', area+':users');
-};
+}
 
-
-/*function checkExpires(){
+function checkExpires(){
 	//grab the expire set
 	store.smembers('expireKeys', function(err, keys){
 		if(keys != null){
