@@ -74,6 +74,7 @@ io.sockets.on('connection', function (client) {
 		{
 			case "setUsername":
   				pub.publish("chatting", "A New Challenger Enters the Ring:" + msg.user);
+  				client.emit("A New Challenger Enters the Ring:" + msg.user);
 				store.sadd("onlineUsers", msg.user);
   			break;
 			case "sendscore":
@@ -87,7 +88,8 @@ io.sockets.on('connection', function (client) {
 				});
   			break;
   			case "chat":
-  				pub.publish("chatting", msg.message);	
+  				pub.publish("chatting", msg.message);
+  				client.emit(msg.message);
   			break;
 			default:
   				console.log("!!!received unknown input msg!!!");
@@ -96,6 +98,7 @@ io.sockets.on('connection', function (client) {
 	client.on('disconnect',function () {
 		//sub.quit();
 		pub.publish("chatting","Disconnected :" + client.id);
+		client.emit("Disconnected :" + client.id);
 	});
 });
 
