@@ -41,7 +41,6 @@ if (!module.parent) {
 			{
 				case "setUsername":
   					pub.publish("realtime", "A New Challenger Enters the Ring:" + msg.user);
-					store.sadd("onlineUsers", msg.user);
   					break;
 				case "sendscore":
   					list.zadd("myset", msg.score , msg.user);
