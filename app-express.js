@@ -13,6 +13,8 @@ const client = redis.createClient();
 const io = require('socket.io');
 const list = redis.createClient();
 
+const _ = require('underscore');
+
 if (!module.parent) {
     server.listen(PORT, HOST);
     const socket  = io.listen(server);
