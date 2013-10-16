@@ -55,7 +55,7 @@ var list = redis.createClient();
 sub.subscribe("chatting");
 sub.on("message", function (channel, message) {
 	console.log(channel + ": message received on server from publish ");
-	client.send(message);
+	//client.send(message);
 });
 
 io.sockets.on('connection', function (client) {
