@@ -1,10 +1,11 @@
 var app = require('http').createServer(handler);
-app.listen(8088);
 var io = require('socket.io').listen(app);
 var redis = require('redis');
 var fs = require('fs');
 var _ = require('underscore');
 var path = require('path');
+
+app.listen(8088);
 
 function handler(req,res){	
 	var filePath = '.' + req.url;
@@ -53,7 +54,7 @@ var list = redis.createClient();
 
 sub.subscribe("chatting");
 sub.on("message", function (channel, message) {
-	console.log("message received on server from publish ");
+	console.log(channel + ": message received on server from publish ");
 	client.send(message);
 });
 
@@ -93,7 +94,7 @@ io.sockets.on('connection', function (client) {
 		}
 	});
 	client.on('disconnect',function () {
-		sub.quit();
+		//sub.quit();
 		pub.publish("chatting","Disconnected :" + client.id);
 	});
 });
@@ -112,7 +113,7 @@ function setUser(username, img, area, expire){
 };
 
 
-function checkExpires(){
+/*function checkExpires(){
 	//grab the expire set
 	store.smembers('expireKeys', function(err, keys){
 		if(keys != null){
@@ -138,4 +139,4 @@ function checkExpires(){
 			});
 		}
 	});
-};
+};*/
