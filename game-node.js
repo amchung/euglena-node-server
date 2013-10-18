@@ -1,80 +1,30 @@
-const PORT = 8088;
-const HOST = '171.65.102.132';
-
-var express = require('express'),
-	http = require('http'),
-	server = http.createServer(app);
-	
-var app = express();
-
 const redis = require('redis');
-const client = redis.createClient();
+const game = redis.createClient();
 
-const io = require('socket.io');
-const list = redis.createClient();
-
-const _ = require('underscore');
-
-if (!module.parent) {
-    server.listen(PORT, HOST);
-    const socket  = io.listen(server);
- 
-    socket.on('connection', function(client) {
-        const sub = redis.createClient();
-        sub.subscribe('realtime');
-        const pub = redis.createClient();
-        
-    	list.zrevrange("myset", 0 , 4, 'withscores', function(err,members){
-			var lists=_.groupBy(members,function(a,b){
-				return Math.floor(b/2);
-			});
-			console.log( _.toArray(lists) );
-			client.emit("postscore",  _.toArray(lists) );
-		});
- 
-        sub.on("message", function(channel, message) {
-            client.send(message);
-        });
- 
-        client.on('message', function(msg) {
-        	switch(msg.type)
-			{
-				case "setUsername":
-  					pub.publish("realtime", "A New Challenger Enters the Ring:" + client.id +"  =  "+ msg.user);
-  					break;
-				case "sendscore":
-  					list.zadd("myset", msg.score , msg.user);
-					list.zrevrange("myset", 0 , 4, 'withscores', function(err,members){
-						var lists=_.groupBy(members,function(a,b){
-							return Math.floor(b/2);
-						});
-						console.log( _.toArray(lists) );
-						client.emit("postscore",  _.toArray(lists) );
-					});
-  					break;
-  				case "chat":
-  					pub.publish("realtime", msg.message);
-  					break;
-				default:
-  					console.log("!!!received unknown input msg!!!");
-		}
-        });
- 
-        client.on('disconnect', function() {
-            sub.quit();
-            pub.publish("realtime","Disconnected :" + client.id);
-        });
-    });
-}
-
-
-
-
+var ObjX=0;
+var ObjY=0;
 /*******************************************************************
 
 Motion Detection and Game Objects
 
 ********************************************************************/
+
+main();
+
+function main(){
+    var img = new Image();
+	img.onload = function() {
+		console.log('DL: ' + img.src);
+    	// motion detection
+    	compareFrame(img);
+		//update arrays
+    	game.set("ObjX", ObjX);
+    	game.set("ObjY", ObjY);
+    	setInterval(main(),30);
+	};
+	img.src = "http://171.65.102.132:8080/?action=snapshot?t=" + new Date().getTime();
+}
+
 var img1 = null;
 var img2 = null;
 var md_canvas = null;
@@ -152,34 +102,8 @@ function compare(image1, image2, ptX, ptY, threshold, ObjR) {
   return movement;
 }
 
-function drawBox(box_X,box_Y,box_L,totalRes){
-	vid_c.strokeStyle = ( totalRes > 0 ) ? "rgba(253,172,13,1)" : "rgba(250,102,0,1)";
-    vid_c.lineWidth = 2;
-	
-	vid_c.beginPath();
-	vid_c.rect(box_X - box_L/2, box_Y - box_L/2, box_L, box_L);
-    vid_c.stroke();	
-    
-    vid_c.fillStyle = "#f00";
-	vid_c.beginPath();
-	vid_c.moveTo(box_X,box_Y);
-	var enda = (2*Math.PI)*(int_timer/max_timer);
-	vid_c.arc(box_X,box_Y,box_L/4, 0, enda);
-	vid_c.fill();
-	
-	if (score_val>0){
-		vid_c.beginPath();
-    	vid_c.fillStyle = "#fff"; 
-    	vid_c.fillText('score: +'+score_val,box_X - box_L/2, box_Y - box_L/2-10);
-    	
-    	vid_c.moveTo(scoreX, scoreY);
-    	vid_c.strokeStyle = "#fff";
-    	vid_c.lineWidth = 1;
-		vid_c.lineTo(ObjX, ObjY);
-    	vid_c.stroke();	
-    }
-}
 
+////////////////////////////////////////////////
 function resetGame(){
 	window.clearTimeout(gametimer);
 	
