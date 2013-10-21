@@ -81,8 +81,10 @@ function takeSnapshot(){
             imagedata+= chunk; 
         });
         res.on('end', function(){
-        	console.log("/tmp/"+timestamp+".jpg");
-            fs.writeFile("/tmp/"+timestamp+".jpg", imagedata, 'binary');
+        	console.log("tmp/"+timestamp+".jpg");
+        	var path = require('path');
+        	var file = path.join(__dirname, 'tmp', timestamp+".jpg");
+            fs.writeFile(file, imagedata, 'binary');
         });
     }).on('error', function(e) {
     	console.log("Got error: " + e.message);
