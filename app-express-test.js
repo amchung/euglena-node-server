@@ -69,7 +69,9 @@ if (!module.parent) {
     });
 }
 
-setInterval(takeSnapshot, 1000);
+var t_interval = 1000 * 60 * 30;
+setInterval(takeSnapshot, t_interval);
+takeSnapshot();
 
 function takeSnapshot(){
 	var timestamp = new Date().getTime();
