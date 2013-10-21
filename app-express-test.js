@@ -5,6 +5,8 @@ var express = require('express'),
 	http = require('http'),
 	server = http.createServer(app);
 	
+var fs  = require('fs');
+	
 var app = express();
 
 const redis = require('redis');
