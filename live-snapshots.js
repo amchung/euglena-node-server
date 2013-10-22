@@ -8,8 +8,7 @@ var Canvas = require('canvas')
   , ctx = canvas.getContext('2d')
   , Image = Canvas.Image;
   
-  
-  
+var http = require('http');
   
 function takeSnapshot(){
 	var timestamp = new Date().getTime();
