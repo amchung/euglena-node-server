@@ -32,7 +32,8 @@ function getMjpeg(){
     	});
 
     	res.on('end', function () {
-  			img = new canvas.Image;
+  			//img = new canvas.Image;
+  			var img = new Image();
   			img.src = data;
   			ctx.drawImage(img, 0, 0, img.width, img.height);
 		});
