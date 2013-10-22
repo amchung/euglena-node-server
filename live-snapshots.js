@@ -27,7 +27,7 @@ function getMjpeg(){
 }
 
 http.createServer(function (req, res) {
-  clock(ctx);
+  getMjpeg();
   res.writeHead(200, { 'Content-Type': 'text/html' });
   res.end('' + '<img src="' + canvas.toDataURL() + '" />');
 }).listen(3000);
