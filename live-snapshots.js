@@ -23,11 +23,11 @@ options = {
 function getMjpeg(){
 	var request = http.get(options, function(res){
     	var imagedata = '';
-    	//res.setEncoding('binary');
-		var data = new Buffer(parseInt(res.headers['content-length'],10));
+    	res.setEncoding('binary');
+		//var data = new Buffer(parseInt(res.headers['content-length'],10));
 	
     	res.on('data', function(chunk){
-    		chunk.copy(data, imagedata);
+    		//chunk.copy(data, imagedata);
         	imagedata += chunk;
     	});
 
