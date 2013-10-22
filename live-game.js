@@ -71,7 +71,8 @@ function drawBox(box_X,box_Y,box_L,totalRes){
     ctx.beginPath();
     ctx.moveTo(box_X,box_Y);
     
-    var enda = (2*Math.PI)*(int_timer/max_timer);
+    // render timer
+    /*var enda = (2*Math.PI)*(int_timer/max_timer);
     ctx.arc(box_X,box_Y,box_L/4, 0, enda);
     ctx.fill();
         
@@ -85,7 +86,7 @@ function drawBox(box_X,box_Y,box_L,totalRes){
     	ctx.lineWidth = 1;
         ctx.lineTo(ObjX, ObjY);
         ctx.stroke();        
-    }
+    }*/
 }
 
 function resetBox(){
