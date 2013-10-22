@@ -1,9 +1,63 @@
+var express = require('express'),
+	http = require('http'),
+	server = http.createServer(app);
+	
+var app = express();
+
+const redis = require('redis');
+
+const io = require('socket.io');
+const list = redis.createClient();
+
+const _ = require('underscore');
+
+const HOST = '171.65.102.132';
+
+if (!module.parent) {
+    server.listen(3001, HOST);
+    const socket  = io.listen(server);
+ 
+    socket.on('connection', function(client) {
+    	list.zrevrange("myset", 0 , 4, 'withscores', function(err,members){
+			var lists=_.groupBy(members,function(a,b){
+				return Math.floor(b/2);
+			});
+			console.log(">> New Connection :" + client.id);
+			client.emit("postscore",  _.toArray(lists) );
+		});
+ 
+        client.on('message', function(msg) {
+        	switch(msg.type)
+			{
+				case "sendscore":
+  					list.zadd("myset", msg.score , msg.user);
+					list.zrevrange("myset", 0 , 4, 'withscores', function(err,members){
+						var lists=_.groupBy(members,function(a,b){
+							return Math.floor(b/2);
+						});
+						console.log( _.toArray(lists) );
+						client.emit("postscore",  _.toArray(lists) );
+					});
+  					break;
+				default:
+  					console.log("____err: received unknown input msg___");
+			}
+        });
+ 
+        client.on('disconnect', function() {
+            console.log("<< Disconnected :" + client.id);
+        });
+    });
+}
+
+
 
 /**
  * Module dependencies.
  */
   
-var http = require('http');
+  
+var screen_http = require('http');
 
 var vid_width = 640
   , vid_height = 480;
@@ -13,6 +67,9 @@ var Canvas = require('canvas')
   , ctx = canvas.getContext('2d')
   , Image = Canvas.Image;
 
+/*******************************************************************************
+  Game Main Loop
+*******************************************************************************/
 
 var t_interval = 1000/10;
 setInterval(gameLoop, t_interval);
@@ -36,7 +93,7 @@ function gameLoop(){
   			img.onload = function(){
   				ctx.clearRect(0, 0, vid_width, vid_height);
 				ctx.drawImage(img, 0, 0, img.width, img.height);
-				console.log('frame rendered at    :    ' + timestamp);
+				//console.log('frame rendered at    :    ' + timestamp);
             	// motion detection
             	compareFrame(img);
 			};
@@ -48,6 +105,9 @@ function gameLoop(){
     });
 }
 
+/*******************************************************************************
+  Game Core
+*******************************************************************************/
 
 
 var ObjX = vid_width/2,
@@ -210,8 +270,13 @@ function compareFrame(img1) {
   img2 = img1;
 }
 
-http.createServer(function (req, res) {
+/*******************************************************************************
+  Stream Rendered Live Game Screen
+*******************************************************************************/
+
+screen_http.createServer(function (req, res) {
   res.writeHead(200, { 'Content-Type': 'text/html' });
   res.end('' + '<img src="' + canvas.toDataURL() + '" />');
 }).listen(3000);
+
 console.log('Server started on port 3000');
