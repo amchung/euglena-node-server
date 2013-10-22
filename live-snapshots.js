@@ -34,8 +34,16 @@ function getMjpeg(){
     	res.on('end', function () {
   			//img = new canvas.Image;
   			var img = new Image();
-  			img.src = imagedata;
-  			ctx.drawImage(img, 0, 0, img.width, img.height);
+  			
+  			img.onerror = function(err){
+  				throw err;
+			};
+
+  			img.onload = function(){
+				ctx.drawImage(img, 0, 0, img.width, img.height);
+			};
+			
+			img.src = imagedata;
 		});
 	});
 }
