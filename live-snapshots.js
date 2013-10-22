@@ -10,24 +10,52 @@ var Canvas = require('canvas')
   
   
   
+  
+function takeSnapshot(){
+	var timestamp = new Date().getTime();
+	
+	http.get("http://171.65.102.132:8080/?action=snapshot?t=" + timestamp, function(res) {
+        res.setEncoding('binary')
+        var imagedata = ''
+        res.on('data', function(chunk){
+            imagedata+= chunk; 
+        });
+        res.on('end', function(){
+        	var img = new Image();
+        	img.onerror = function(err){
+  				throw err;
+			};
+
+  			img.onload = function(){
+				ctx.drawImage(img, 0, 0, img.width, img.height);
+			};
+			
+			img.src = imagedata;
+        });
+    }).on('error', function(e) {
+    	console.log("Got error: " + e.message);
+    });
+}
+
+/*  
 var http = require('http')
   , fs = require('fs')
-  , options
+  , url = require('url');
 
-options = {
+var options = {
     host: '171.65.102.132'
   , port: 8080
   , path: '/?action=snapshot?t=' + new Date().getTime()
 }
 
 function getMjpeg(){
-	var request = http.get(options, function(res){
+	http.get(options, function(res){
     	var imagedata = '';
     	res.setEncoding('binary');
-		//var data = new Buffer(parseInt(res.headers['content-length'],10));
+		var data = new Buffer(parseInt(res.headers['content-length'],10));
 	
     	res.on('data', function(chunk){
-    		//chunk.copy(data, imagedata);
+    		chunk.copy(data, imagedata);
         	imagedata += chunk;
     	});
 
@@ -46,7 +74,7 @@ function getMjpeg(){
 			img.src = imagedata;
 		});
 	});
-}
+}*/
 
 
 /*var vid_width = 640
@@ -73,7 +101,7 @@ function getMjpeg(){
 }*/
 
 http.createServer(function (req, res) {
-  getMjpeg();
+  takeSnapshot();
   res.writeHead(200, { 'Content-Type': 'text/html' });
   res.end('' + '<img src="' + canvas.toDataURL() + '" />');
 }).listen(3000);
