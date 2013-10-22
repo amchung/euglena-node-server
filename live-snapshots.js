@@ -6,11 +6,42 @@
 var Canvas = require('canvas')
   , canvas = new Canvas(320, 320)
   , ctx = canvas.getContext('2d')
-  , Image = Canvas.Image
-  , http = require('http');
+  , Image = Canvas.Image;
+  
+  
+  
+var http = require('http')
+  , fs = require('fs')
+  , options
+
+options = {
+    host: '171.65.102.132'
+  , port: 8080
+  , path: '/?action=snapshot?t=' + new Date().getTime();
+}
+
+function getMjpeg(){
+	var request = http.get(options, function(res){
+    	//var imagedata = '';
+    	//res.setEncoding('binary');
+		var data = new Buffer(parseInt(res.headers['content-length'],10));
+		var pos = 0;
+	
+    	res.on('data', function(chunk){
+    		chunk.copy(data, pos);
+        	imagedata += chunk;
+    	});
+
+    	res.on('end', function () {
+  			var img = new canvas.Image;
+  			img.src = data;
+  			ctx.drawImage(img, 0, 0, img.width, img.height);
+		});
+	});
+}
 
 
-var vid_width = 640
+/*var vid_width = 640
   , vid_height = 480;
 
 
@@ -28,19 +59,10 @@ function getMjpeg(){
     	, ctx = canvas.getContext('2d');
 
   		ctx.drawImage(img, 0, 0, w, h, 0, 0, w, h);
-
- 	 	//var out = fs.createWriteStream(__dirname + '/crop.jpg');
-
-  		//var stream = canvas.createJPEGStream({
-  		//  	bufsize : 2048,
- 		//   	quality : 80
- 	 	//});
-
-	  	//stream.pipe(out);
 	};
 
 	img.src = "http://171.65.102.132:8080/?action=snapshot?t=" + new Date().getTime();
-}
+}*/
 
 http.createServer(function (req, res) {
   getMjpeg();
