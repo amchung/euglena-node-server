@@ -15,9 +15,9 @@ function takeSnapshot(){
 	
 	http.get("http://171.65.102.132:8080/?action=snapshot?t=" + timestamp, function(res) {
         res.setEncoding('binary')
-        var imagedata = ''
+        var buf = ''
         res.on('data', function(chunk){
-            imagedata+= chunk; 
+            buf+= chunk; 
         });
         res.on('end', function(){
         	var img = new Image();
@@ -29,7 +29,7 @@ function takeSnapshot(){
 				ctx.drawImage(img, 0, 0, img.width, img.height);
 			};
 			
-			img.src = imagedata;
+			img.src = new Buffer(buf, 'binary');
         });
     }).on('error', function(e) {
     	console.log("Got error: " + e.message);
