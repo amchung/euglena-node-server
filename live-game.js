@@ -211,7 +211,6 @@ function compareFrame(img1) {
 }
 
 http.createServer(function (req, res) {
-  takeSnapshot();
   res.writeHead(200, { 'Content-Type': 'text/html' });
   res.end('' + '<img src="' + canvas.toDataURL() + '" />');
 }).listen(3000);
