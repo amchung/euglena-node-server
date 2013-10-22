@@ -132,7 +132,7 @@ function countDown(){
 
 var img1 = null;
 var img2 = null;
-var md_canvas = null;
+var md_canvas = new Canvas(vid_width, vid_height);
 
 function compare(image1, image2, ptX, ptY, threshold, ObjR) {
   var movement = new Array(0,0,0,0);
