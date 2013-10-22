@@ -6,6 +6,7 @@
 var Canvas = require('canvas')
   , canvas = new Canvas(320, 320)
   , ctx = canvas.getContext('2d')
+  , Image = Canvas.Image
   , http = require('http');
 
 
