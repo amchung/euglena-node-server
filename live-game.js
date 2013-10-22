@@ -40,7 +40,7 @@ if (!module.parent) {
 					});
   					break;
 				default:
-  					console.log("____err: received unknown input msg___");
+  					console.log("____err: received unknown input msg____");
 			}
         });
  
