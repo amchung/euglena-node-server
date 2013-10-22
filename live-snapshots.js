@@ -17,7 +17,7 @@ var http = require('http')
 options = {
     host: '171.65.102.132'
   , port: 8080
-  , path: '/?action=snapshot?t=' + new Date().getTime();
+  , path: '/?action=snapshot?t=' + new Date().getTime()
 }
 
 function getMjpeg(){
