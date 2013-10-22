@@ -57,6 +57,7 @@ var ObjX = vid_width/2,
 	scoreX = ObjX,
     scoreY = ObjY;
 	
+var brown_const=0;
 
 function drawBox(box_X,box_Y,box_L,totalRes){
     ctx.strokeStyle = ( totalRes > 0 ) ? "rgba(253,172,13,1)" : "rgba(250,102,0,1)";
