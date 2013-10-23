@@ -274,7 +274,7 @@ function compareFrame(img1) {
   Stream Rendered Live Game Screen
 *******************************************************************************/
 
-var fs = require('fs')
+/*var fs = require('fs')
   , out = fs.createWriteStream(__dirname + '/gameframe.png')
   , stream = canvas.pngStream();
   
@@ -284,11 +284,17 @@ stream.on('data', function(chunk){
 
 stream.on('end', function(){
   console.log('saved png');
-});
+});*/
 
-/*screen_http.createServer(function (req, res) {
-  res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+screen_http.createServer(function (req, res) {
+  //res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+  //res.writeHead(200, { 'Content-Type': 'text/html' });
   //res.end('' + '<img src="' + canvas.toDataURL() + '" />');
+	res.writeHead(200, { 'Content-Type': 'text/html' });
+	res.end(''
+    + '<meta http-equiv="refresh" content="1;" />'
+    + '<img src="' + canvas.toDataURL() + '" />');
+}).listen(3000);
   //res.end(canvas.toDataURL(),'binary');
 
 
@@ -297,4 +303,4 @@ stream.on('data', function(chunk){
 });
 }).listen(3000);
 
-console.log('Server started on port 3000');*/
+console.log('Server started on port 3000');
