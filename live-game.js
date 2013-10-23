@@ -276,8 +276,6 @@ function compareFrame(img1) {
 
 screen_http.createServer(function (req, res) {
   res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.end(''
-    + '<meta http-equiv="refresh" content="1;" />'
-    + '<img src="' + canvas.toDataURL() + '" />');
+  res.end(''    + '<img src="' + canvas.toDataURL() + '" />');
 }).listen(3000);
 console.log('Server started on port 3000');
