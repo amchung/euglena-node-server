@@ -287,13 +287,8 @@ stream.on('end', function(){
 });*/
 
 screen_http.createServer(function (req, res) {
-  //res.writeHead(200, { 'Content-Type': 'image/jpeg' });
-  //res.writeHead(200, { 'Content-Type': 'text/html' });
-  //res.end('' + '<img src="' + canvas.toDataURL() + '" />');
-	res.writeHead(200, { 'Content-Type': 'text/html' });
-	res.end(''
-    + '<meta http-equiv="refresh" content="1;" />'
-    + '<img src="' + canvas.toDataURL() + '" />');
+	res.writeHead(200, { 'Content-Type': 'image/png' });
+	res.end(canvas.toDataURL());
 }).listen(3000);
   //res.end(canvas.toDataURL(),'binary');
 
