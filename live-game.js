@@ -40,7 +40,7 @@ if (!module.parent) {
 					});
   					break;
   				case "reqframe":
-						client.send("postframe",  canvas.toDataURL() );
+						client.emit("postframe",  canvas.toDataURL() );
   					break;
 				default:
   					console.log("____err: received unknown input msg____");
@@ -97,9 +97,6 @@ function gameLoop(){
   				img.onload = function(){
   					ctx.clearRect(0, 0, vid_width, vid_height);
 					ctx.drawImage(img, 0, 0, img.width, img.height);
-					
-					ctx.fillStyle = 'white';
-					ctx.fillText('[ '+ timestamp +' ]    ObjX: '+(ObjX-vid_width/2)+'    ObjY: '+(ObjY-vid_height/2), 10, 10);
             		// motion detection
             		compareFrame(img);
 				};
@@ -271,6 +268,9 @@ function compareFrame(img1) {
     ObjY=Math.round(ObjY/2)*2;
 
     drawBox(ObjX,ObjY,ObjL,res[0]+res[1]+res[2]+res[3]);
+        
+    ctx.fillStyle = 'white';
+	ctx.fillText('[ '+ timestamp +' ]    ObjX: '+(ObjX-vid_width/2)+'    ObjY: '+(ObjY-vid_height/2), 10, 10);
   }
   // copy reference of img1 to img2
   img2 = img1;
