@@ -75,7 +75,7 @@ var Canvas = require('canvas')
   Game Main Loop
 *******************************************************************************/
 
-var t_interval = 1000/5;
+var t_interval = 1000/30;
 var t_log = 0;
 var timestamp = 0;
 setInterval(gameLoop, t_interval);
