@@ -7,6 +7,7 @@ var app = express();
 const redis = require('redis');
 
 const io = require('socket.io');
+io.set('log level', 1);
 const list = redis.createClient();
 
 const _ = require('underscore');
@@ -82,7 +83,6 @@ gameLoop();
   
 function gameLoop(){
 		timestamp = new Date().getTime();
-	
 		http.get("http://171.65.102.132:8080/?action=snapshot?t=" + timestamp, function(res) {
         	res.setEncoding('binary')
         	var buf = ''
