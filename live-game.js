@@ -75,36 +75,47 @@ var Canvas = require('canvas')
 *******************************************************************************/
 
 var t_interval = 1000/10;
+var t_log = 0;
 setInterval(gameLoop, t_interval);
 gameLoop();
   
 function gameLoop(){
-	var timestamp = new Date().getTime();
+	t_log = t_log + 1;
+	if (t_log<100){
+		var timestamp = new Date().getTime();
 	
-	http.get("http://171.65.102.132:8080/?action=snapshot?t=" + timestamp, function(res) {
-        res.setEncoding('binary')
-        var buf = ''
-        res.on('data', function(chunk){
-            buf+= chunk; 
-        });
-        res.on('end', function(){
-        	var img = new Image();
-        	img.onerror = function(err){
-  				throw err;
-			};
+		http.get("http://171.65.102.132:8080/?action=snapshot?t=" + timestamp, function(res) {
+        	res.setEncoding('binary')
+        	var buf = ''
+        	res.on('data', function(chunk){
+            	buf+= chunk; 
+        	});
+        	res.on('end', function(){
+        		var img = new Image();
+        		img.onerror = function(err){
+  					throw err;
+				};
 
-  			img.onload = function(){
-  				ctx.clearRect(0, 0, vid_width, vid_height);
-				ctx.drawImage(img, 0, 0, img.width, img.height);
-            	// motion detection
-            	compareFrame(img);
-			};
+  				img.onload = function(){
+  					ctx.clearRect(0, 0, vid_width, vid_height);
+					ctx.drawImage(img, 0, 0, img.width, img.height);
+					
+					ctx.fillStyle = 'green';
+					ctx.fillText('[ '+ timestamp +' ]    ObjX: '+ObjX+'    ObjY: '+ObjY, 10, 10);
+            		// motion detection
+            		compareFrame(img);
+				};
 			
-			img.src = new Buffer(buf, 'binary');
-        });
-    }).on('error', function(e) {
-    	console.log("Got error: " + e.message);
-    });
+				img.src = new Buffer(buf, 'binary');
+        	});
+    	}).on('error', function(e) {
+    		console.log("Got error: " + e.message);
+    	});
+    }else{
+    	console.log('[ '+ timestamp +' ]    ObjX: '+ObjX+'    ObjY: '+ObjY);
+    	t_log = 0;
+    	gameLoop();
+    }
 }
 
 /*******************************************************************************
@@ -115,6 +126,7 @@ function gameLoop(){
 var ObjX = vid_width/2,
 	ObjY = vid_height/2,
 	ObjL = 80,
+	ObjR = 50,
 	score_val = 0,
 	scoreX = ObjX,
     scoreY = ObjY;
@@ -240,7 +252,6 @@ function compareFrame(img1) {
   // just compare if there are two pictures
   if ( img2 != null ) {
     var res;
-    var ObjR=50;
 
     try {
       // compare the two pictures, the given threshold helps to ignore noise
