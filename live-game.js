@@ -274,10 +274,27 @@ function compareFrame(img1) {
   Stream Rendered Live Game Screen
 *******************************************************************************/
 
-screen_http.createServer(function (req, res) {
+var fs = require('fs')
+  , out = fs.createWriteStream(__dirname + '/gameframe.png')
+  , stream = canvas.pngStream();
+  
+stream.on('data', function(chunk){
+  out.write(chunk);
+});
+
+stream.on('end', function(){
+  console.log('saved png');
+});
+
+/*screen_http.createServer(function (req, res) {
   res.writeHead(200, { 'Content-Type': 'image/jpeg' });
   //res.end('' + '<img src="' + canvas.toDataURL() + '" />');
-  res.end(canvas.toDataURL(),'binary');
+  //res.end(canvas.toDataURL(),'binary');
+
+
+stream.on('data', function(chunk){
+  out.write(chunk);
+});
 }).listen(3000);
 
-console.log('Server started on port 3000');
+console.log('Server started on port 3000');*/
