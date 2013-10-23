@@ -1,4 +1,4 @@
-const PORT = 8089;
+const PORT = 8088;
 const HOST = '171.65.102.132';
 
 var express = require('express'),
@@ -75,8 +75,8 @@ if (!module.parent) {
 
 http.createServer(function (req, res) {
   clock(ctx);
-  res.writeHead(200, { 'Content-Type': 'image/jpeg' });
-  res.end(canvas.toDataURL());
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.end('<img src="' + canvas.toDataURL() + '" />');
 }).listen(3000);
 console.log('Server started on port 3000');
 
@@ -96,7 +96,7 @@ function takeSnapshot(){
         res.setEncoding('binary')
         var imagedata = ''
         res.on('data', function(chunk){
-            imagedata+= chunk;
+            imagedata+= chunk; 
         });
         res.on('end', function(){
         	console.log("tmp/"+timestamp+".jpg");

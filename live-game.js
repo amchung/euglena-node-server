@@ -275,7 +275,7 @@ function compareFrame(img1) {
 *******************************************************************************/
 
 screen_http.createServer(function (req, res) {
-  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.writeHead(200, { 'Content-Type': 'image/jpeg' });
   res.end('' + '<img src="' + canvas.toDataURL() + '" />');
 }).listen(3000);
 
