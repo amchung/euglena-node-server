@@ -39,6 +39,10 @@ if (!module.parent) {
 						client.emit("postscore",  _.toArray(lists) );
 					});
   					break;
+  				case "reqframe":
+						console.log( msg.user + " << frame" );
+						client.emit("postframe",  canvas.toDataURL() );
+  					break;
 				default:
   					console.log("____err: received unknown input msg____");
 			}
@@ -274,8 +278,8 @@ function compareFrame(img1) {
   Stream Rendered Live Game Screen
 *******************************************************************************/
 
-screen_http.createServer(function (req, res) {
+/*screen_http.createServer(function (req, res) {
   res.writeHead(200, { 'Content-Type': 'text/html' });
   res.end(''    + '<img src="' + canvas.toDataURL() + '" />');
 }).listen(3000);
-console.log('Server started on port 3000');
+console.log('Server started on port 3000');*/
