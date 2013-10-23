@@ -80,8 +80,6 @@ setInterval(gameLoop, t_interval);
 gameLoop();
   
 function gameLoop(){
-	t_log = t_log + 1;
-	if (t_log<100){
 		var timestamp = new Date().getTime();
 	
 		http.get("http://171.65.102.132:8080/?action=snapshot?t=" + timestamp, function(res) {
@@ -111,11 +109,6 @@ function gameLoop(){
     	}).on('error', function(e) {
     		console.log("Got error: " + e.message);
     	});
-    }else{
-    	//console.log('[ '+ timestamp +' ]    ObjX: '+(ObjX-vid_width/2)+'    ObjY: '+(ObjY-vid_height/2));
-    	t_log = 0;
-    	gameLoop();
-    }
 }
 
 /*******************************************************************************
