@@ -7,7 +7,7 @@ var app = express();
 const redis = require('redis');
 
 const io = require('socket.io');
-io.set('log level', 1);
+
 const list = redis.createClient();
 
 const _ = require('underscore');
@@ -17,6 +17,11 @@ const HOST = '171.65.102.132';
 if (!module.parent) {
     server.listen(3001, HOST);
     const socket  = io.listen(server);
+    
+    io.enable('browser client minification');  // send minified client
+	io.enable('browser client etag');          // apply etag caching logic based on version number
+	io.enable('browser client gzip');          // gzip the file
+	io.set('log level', 1);                    // reduce logging
  
     socket.on('connection', function(client) {
     	list.zrevrange("myset", 0 , 4, 'withscores', function(err,members){
