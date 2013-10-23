@@ -40,7 +40,6 @@ if (!module.parent) {
 					});
   					break;
   				case "reqframe":
-						//console.log( msg.user + " << frame" );
 						client.emit("postframe",  canvas.toDataURL() );
   					break;
 				default:
@@ -97,7 +96,6 @@ function gameLoop(){
   			img.onload = function(){
   				ctx.clearRect(0, 0, vid_width, vid_height);
 				ctx.drawImage(img, 0, 0, img.width, img.height);
-				//console.log('frame rendered at    :    ' + timestamp);
             	// motion detection
             	compareFrame(img);
 			};
