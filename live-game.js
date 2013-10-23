@@ -107,7 +107,7 @@ function gameLoop(){
 				img.src = new Buffer(buf, 'binary');
         	});
     	}).on('error', function(e) {
-    		console.log("Got error: " + e.message);
+    		//console.log("Got error: " + e.message);
     	});
 }
 
