@@ -40,7 +40,7 @@ if (!module.parent) {
 					});
   					break;
   				case "reqframe":
-						console.log( msg.user + " << frame" );
+						//console.log( msg.user + " << frame" );
 						client.emit("postframe",  canvas.toDataURL() );
   					break;
 				default:
