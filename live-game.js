@@ -75,9 +75,9 @@ var Canvas = require('canvas')
   Game Main Loop
 *******************************************************************************/
 
-//var t_interval = 1000/6;
-//var timestamp = 0;
-//setInterval(gameLoop, t_interval);
+var t_interval = 1000/6;
+var timestamp = 0;
+setInterval(gameLoop, t_interval);
 gameLoop();
   
 function gameLoop(){
@@ -91,7 +91,7 @@ function gameLoop(){
         res.on('end', function(){
         	var img = new Image();
         	img.onerror = function(err){
-  				throw err;
+  				//throw err;
 			};
 
   			img.onload = function(){
@@ -99,13 +99,12 @@ function gameLoop(){
 				ctx.drawImage(img, 0, 0, img.width, img.height);
             	// motion detection
             	compareFrame(img);
-            	gameLoop();
 			};
 			
 			img.src = new Buffer(buf, 'binary');
         });
     }).on('error', function(e) {
-    	console.log("Got error: " + e.message);
+    	//console.log("Got error: " + e.message);
     });
 }
 
