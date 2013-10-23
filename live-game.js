@@ -62,7 +62,8 @@ var vid_width = 640
 var Canvas = require('canvas')
   , canvas = new Canvas(vid_width, vid_height)
   , ctx = canvas.getContext('2d')
-  , Image = Canvas.Image;
+  , Image = Canvas.Image
+  , fs = require('fs');
 
 /*******************************************************************************
   Game Main Loop
