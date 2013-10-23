@@ -76,11 +76,12 @@ var Canvas = require('canvas')
 
 var t_interval = 1000/10;
 var t_log = 0;
+var timestamp = 0;
 setInterval(gameLoop, t_interval);
 gameLoop();
   
 function gameLoop(){
-		var timestamp = new Date().getTime();
+		timestamp = new Date().getTime();
 	
 		http.get("http://171.65.102.132:8080/?action=snapshot?t=" + timestamp, function(res) {
         	res.setEncoding('binary')
