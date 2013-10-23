@@ -297,10 +297,4 @@ screen_http.createServer(function (req, res) {
 }).listen(3000);
   //res.end(canvas.toDataURL(),'binary');
 
-
-stream.on('data', function(chunk){
-  out.write(chunk);
-});
-}).listen(3000);
-
 console.log('Server started on port 3000');
