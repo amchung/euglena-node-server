@@ -100,8 +100,8 @@ function gameLoop(){
   					ctx.clearRect(0, 0, vid_width, vid_height);
 					ctx.drawImage(img, 0, 0, img.width, img.height);
 					
-					ctx.fillStyle = 'green';
-					ctx.fillText('[ '+ timestamp +' ]    ObjX: '+ObjX+'    ObjY: '+ObjY, 10, 10);
+					ctx.fillStyle = 'white';
+					ctx.fillText('[ '+ timestamp +' ]    ObjX: '+(ObjX-vid_width/2)+'    ObjY: '+(ObjY-vid_height/2), 10, 10);
             		// motion detection
             		compareFrame(img);
 				};
@@ -112,7 +112,7 @@ function gameLoop(){
     		console.log("Got error: " + e.message);
     	});
     }else{
-    	console.log('[ '+ timestamp +' ]    ObjX: '+ObjX+'    ObjY: '+ObjY);
+    	//console.log('[ '+ timestamp +' ]    ObjX: '+(ObjX-vid_width/2)+'    ObjY: '+(ObjY-vid_height/2));
     	t_log = 0;
     	gameLoop();
     }
