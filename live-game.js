@@ -75,38 +75,38 @@ var Canvas = require('canvas')
   Game Main Loop
 *******************************************************************************/
 
-var t_interval = 1000/30;
-var t_log = 0;
-var timestamp = 0;
-setInterval(gameLoop, t_interval);
+//var t_interval = 1000/6;
+//var timestamp = 0;
+//setInterval(gameLoop, t_interval);
 gameLoop();
   
 function gameLoop(){
-		timestamp = new Date().getTime();
-		http.get("http://171.65.102.132:8080/?action=snapshot?t=" + timestamp, function(res) {
-        	res.setEncoding('binary')
-        	var buf = ''
-        	res.on('data', function(chunk){
-            	buf+= chunk; 
-        	});
-        	res.on('end', function(){
-        		var img = new Image();
-        		img.onerror = function(err){
-  					throw err;
-				};
+	timestamp = new Date().getTime();
+	http.get("http://171.65.102.132:8080/?action=snapshot?t=" + timestamp, function(res) {
+        res.setEncoding('binary')
+        var buf = ''
+        res.on('data', function(chunk){
+            buf+= chunk; 
+        });
+        res.on('end', function(){
+        	var img = new Image();
+        	img.onerror = function(err){
+  				throw err;
+			};
 
-  				img.onload = function(){
-  					ctx.clearRect(0, 0, vid_width, vid_height);
-					ctx.drawImage(img, 0, 0, img.width, img.height);
-            		// motion detection
-            		compareFrame(img);
-				};
+  			img.onload = function(){
+  				ctx.clearRect(0, 0, vid_width, vid_height);
+				ctx.drawImage(img, 0, 0, img.width, img.height);
+            	// motion detection
+            	compareFrame(img);
+            	gameLoop();
+			};
 			
-				img.src = new Buffer(buf, 'binary');
-        	});
-    	}).on('error', function(e) {
-    		console.log("Got error: " + e.message);
-    	});
+			img.src = new Buffer(buf, 'binary');
+        });
+    }).on('error', function(e) {
+    	console.log("Got error: " + e.message);
+    });
 }
 
 /*******************************************************************************
