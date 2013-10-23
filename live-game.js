@@ -55,9 +55,6 @@ if (!module.parent) {
 /**
  * Module dependencies.
  */
-  
-  
-var screen_http = require('http');
 
 var vid_width = 640
   , vid_height = 480;
@@ -96,6 +93,12 @@ function gameLoop(){
 				//console.log('frame rendered at    :    ' + timestamp);
             	// motion detection
             	compareFrame(img);
+            	var out = fs.createWriteStream(__dirname + '/gameframe.png')
+				  , stream = canvas.createPNGStream();
+
+				stream.on('data', function(chunk){
+  					out.write(chunk);
+				});
 			};
 			
 			img.src = new Buffer(buf, 'binary');
@@ -273,27 +276,3 @@ function compareFrame(img1) {
 /*******************************************************************************
   Stream Rendered Live Game Screen
 *******************************************************************************/
-
-var fs = require('fs')
-	, out = fs.createWriteStream(__dirname + '/gameframe.png')
-	, stream = canvas.createPNGStream();
-	
-stream.pipe(out);
-
-/*screen_http.createServer(function (req, res) {
-	fs.stat(file_path, function(err, stat){
-		var out;
-		res.writeHead(200, {
-			'Content-Type': 'image/png',
-			'Content-Length' : stat.size 
-		});
-		out = fs.createReadStream(__dirname + '/gameframe.png');
-	});
-	res.writeHead(200, { 'Content-Type': 'image/png', 'Content-Length' : stat.size });
-	res.end(canvas.toDataURL('image/png', function(err, str){
-		if (err) throw err;
-	});
-}).listen(3000);
-  //res.end(canvas.toDataURL(),'binary');
-
-console.log('Server started on port 3000');*/
