@@ -40,7 +40,7 @@ if (!module.parent) {
 					});
   					break;
   				case "reqframe":
-						client.emit("postframe",  canvas.toDataURL() );
+						client.send("postframe",  canvas.toDataURL() );
   					break;
 				default:
   					console.log("____err: received unknown input msg____");
@@ -107,7 +107,7 @@ function gameLoop(){
 				img.src = new Buffer(buf, 'binary');
         	});
     	}).on('error', function(e) {
-    		//console.log("Got error: " + e.message);
+    		console.log("Got error: " + e.message);
     	});
 }
 
