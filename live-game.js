@@ -6,14 +6,7 @@ var app = express();
 
 const redis = require('redis');
 
-var io = require('socket.io');
-io.set('log level', 1);
-
-io.enable('browser client minification');  // send minified client
-io.enable('browser client etag');          // apply etag caching logic based on version number
-io.enable('browser client gzip');          // gzip the file
-io.set('log level', 1);                    // reduce logging
-
+const io = require('socket.io');
 
 const list = redis.createClient();
 
@@ -82,7 +75,7 @@ var Canvas = require('canvas')
   Game Main Loop
 *******************************************************************************/
 
-var t_interval = 1000/10;
+var t_interval = 1000/5;
 var t_log = 0;
 var timestamp = 0;
 setInterval(gameLoop, t_interval);
