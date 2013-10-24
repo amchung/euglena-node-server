@@ -276,8 +276,8 @@ function compareFrame(img1) {
 
     drawBox(ObjX,ObjY,ObjL,res[0]+res[1]+res[2]+res[3]);
         
-    //ctx.fillStyle = 'white';
-	//ctx.fillText('[ '+ timestamp +' ]    ObjX: '+(ObjX-vid_width/2)+'    ObjY: '+(ObjY-vid_height/2), 10, 10);
+    ctx.fillStyle = 'white';
+	ctx.fillText('[ '+ timestamp +' ]    ObjX: '+(ObjX-vid_width/2)+'    ObjY: '+(ObjY-vid_height/2), 10, 10);
   }
   // copy reference of img1 to img2
   img2 = img1;
