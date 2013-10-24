@@ -24,7 +24,7 @@ app.listen(PORT);
   Capture Euglena Live Screen
 *******************************************************************************/
 
-var snapshot_t_interval = 1000 * 60 * 1; // every minute
+var snapshot_t_interval = 1000 * 60 * 10; // every minute
 setInterval(takeSnapshot, snapshot_t_interval);
 takeSnapshot();
 
@@ -38,9 +38,10 @@ function takeSnapshot(){
             imagedata+= chunk; 
         });
         res.on('end', function(){
-          console.log("tmp/"+timestamp+".jpg");
-          var path = require('path');
-          var file = path.join(__dirname, 'tmp', timestamp+".jpg");
+        	var isoDate = timestamp.toISOString();
+        	console.log("tmp/"+isoDate+".jpg");
+        	var path = require('path');
+        	var file = path.join(__dirname, 'tmp', isoDate+".jpg");
             fs.writeFile(file, imagedata, 'binary');
         });
     }).on('error', function(e) {
