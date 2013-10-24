@@ -316,11 +316,23 @@ function record_start(id){
 
 function record_loop(){
 	var path = require('path');
-	var out = fs.createWriteStream(path.join(__dirname,'rec_tmp',rec_user,zeroFill(rec_i,4)+".png"))
-	, stream = canvas.createPNGStream();
+//	var out = fs.createWriteStream(path.join(__dirname,'rec_tmp',rec_user,zeroFill(rec_i,4)+".png"))
+//	, stream = canvas.createPNGStream();
 
-	stream.on('data', function(chunk){
+/*	stream.on('data', function(chunk){
 		out.write(chunk);
+		console.log(" REC :::: "+"recording frame "+rec_i);
+	});*/
+	var img = canvas.toDataURL();
+	var data = img.replace(/^data:image\/\w+;base64,/, "");
+	var buf = new Buffer(data, 'base64');
+	fs.writeFile(path.join(__dirname,'rec_tmp',rec_user,zeroFill(rec_i,4)+".png"),buf, function (err){
+		if (err) {
+			throw err;
+		}
+		else {
+			console.log(" REC :::: "+"recording frame "+rec_i);
+		}
 	});
 	
 	if (rec_i>30*10){
