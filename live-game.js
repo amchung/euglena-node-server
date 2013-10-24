@@ -37,12 +37,12 @@ if (!module.parent) {
 						var lists=_.groupBy(members,function(a,b){
 							return Math.floor(b/2);
 						});
-						//console.log( _.toArray(lists) );
+						console.log( _.toArray(lists) );
 						client.emit("postscore",  _.toArray(lists) );
 					});
   					break;
   				case "reqframe":
-						//client.emit("postframe",  canvas.toDataURL() );
+						client.emit("postframe",  canvas.toDataURL() );
   					break;
 				default:
   					console.log("____err: received unknown input msg____");
