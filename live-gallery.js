@@ -13,7 +13,10 @@ var app = express();
   Show Euglena Live Screen Gallery
 *******************************************************************************/
 
-app.use('/', express.static(__dirname + '/tmp'));
+app.use(express.static(__dirname + '/tmp'));
+app.get('/', function(req, res) {
+	res.render('gallery.html');
+});
 app.listen(PORT);
 
 /*******************************************************************************
