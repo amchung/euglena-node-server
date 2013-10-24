@@ -54,8 +54,9 @@ if (!module.parent) {
         });
         
         setInterval(function(){
+        	console.log("postframe");
  			client.emit("postframe", canvas.toDataURL());
-		}, 1000/15);
+		}, 1000/6);
     });
 }
 
