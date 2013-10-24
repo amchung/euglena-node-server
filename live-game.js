@@ -6,7 +6,8 @@ var app = express();
 
 const redis = require('redis');
 
-const io = require('socket.io');
+var io = require('socket.io');
+io.set('log level', 1);
 
 const list = redis.createClient();
 
@@ -40,8 +41,8 @@ if (!module.parent) {
 						client.emit("postscore",  _.toArray(lists) );
 					});
   					break;
-  				//case "reqframe":
-				//		client.emit("postframe",  canvas.toDataURL() );
+  				case "reqframe":
+						//client.emit("postframe",  canvas.toDataURL() );
   					break;
 				default:
   					console.log("____err: received unknown input msg____");
