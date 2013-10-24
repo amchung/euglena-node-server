@@ -11,6 +11,7 @@ var io = require('socket.io');
 const list = redis.createClient();
 
 const _ = require('underscore');
+const fs  = require('fs');
 
 const HOST = '171.65.102.132';
 
