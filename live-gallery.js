@@ -1,7 +1,12 @@
 const PORT = 3000;
 const HOST = '171.65.102.132';
 
-var express = require('express');
+var express = require('express'),
+	http = require('http'),
+	server = http.createServer(app);
+	
+var fs  = require('fs');
+	
 var app = express();
 
 /*******************************************************************************
