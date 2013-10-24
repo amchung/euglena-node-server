@@ -350,7 +350,12 @@ function record_end(){
 	var proc = new ffmpeg({ source: path.join(__dirname,'rec_tmp',rec_user,'img%04d'+".png"), nolog: true })
  		.withFps(30)
   		.saveToFile(path.join(__dirname,'rec_tmp',rec_user+".mp4"), function(retcode, error){
-    	console.log('video recorded succesfully');
+  		if (error) {
+			throw error;
+		}
+		else {
+			console.log(" REC :::: "+rec_user+" recorded video successfully.");
+		}
 	});
 	
 	//remove temporary folder and files
