@@ -15,7 +15,7 @@ var app = express();
 
 app.use(express.static(__dirname + '/tmp'));
 app.get('/', function(req, res) {
-	res.render('gallery.html');
+	res.send('hello world');
 });
 app.listen(PORT);
 
