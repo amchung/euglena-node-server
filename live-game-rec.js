@@ -44,7 +44,7 @@ if (!module.parent) {
   				case "reqRecord":
 					//start record
 					console.log(" REC :::: "+client.id+" requested");
-					rec_start(client.id);
+					record_start(client.id);
   					break;
 				default:
   					console.log("____err: received unknown input msg____");
