@@ -335,8 +335,11 @@ function record_loop(){
 		}
 	});
 	
-	if (rec_i>30*10){
+	if (rec_i>30*3){
 		record_end();
+	}
+	else{
+		rec_i = rec_i + 1;
 	}
 }
 
