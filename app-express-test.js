@@ -69,26 +69,3 @@ if (!module.parent) {
     });
 }
 
-var t_interval = 1000 * 60 * 30;
-setInterval(takeSnapshot, t_interval);
-takeSnapshot();
-
-function takeSnapshot(){
-  var timestamp = new Date().getTime();
-  
-  http.get("http://171.65.102.132:8080/?action=snapshot?t=" + timestamp, function(res) {
-        res.setEncoding('binary');
-        var imagedata = '';
-        res.on('data', function(chunk){
-            imagedata+= chunk; 
-        });
-        res.on('end', function(){
-          console.log("tmp/"+timestamp+".jpg");
-          var path = require('path');
-          var file = path.join(__dirname, 'tmp', timestamp+".jpg");
-            fs.writeFile(file, imagedata, 'binary');
-        });
-    }).on('error', function(e) {
-      		console.log("Got error: " + e.message);
-	});
-}
