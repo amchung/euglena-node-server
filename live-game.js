@@ -7,7 +7,6 @@ var app = express();
 const redis = require('redis');
 
 var io = require('socket.io');
-io.set('log level', 1);
 
 const list = redis.createClient();
 
@@ -18,6 +17,7 @@ const HOST = '171.65.102.132';
 if (!module.parent) {
     server.listen(3001, HOST);
     const socket  = io.listen(server);
+    socket.set('log level', 1);
  
     socket.on('connection', function(client) {
     	list.zrevrange("myset", 0 , 4, 'withscores', function(err,members){
