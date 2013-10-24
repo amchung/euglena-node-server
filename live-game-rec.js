@@ -41,9 +41,11 @@ if (!module.parent) {
 						client.emit("postscore",  _.toArray(lists) );
 					});
   					break;
-  				//case "reqrecord":
-					//start recording
-  					//break;
+  				case "reqRecord":
+					//start record
+					console.log(client.id+"::   REC request");
+					rec_start(client.id);
+  					break;
 				default:
   					console.log("____err: received unknown input msg____");
 			}
@@ -284,7 +286,7 @@ function compareFrame(img1) {
 }
 
 /*******************************************************************************
-  Stream Rendered Live Game Screen
+  Record Rendered Live Game Screen
 *******************************************************************************/
 
 /*screen_http.createServer(function (req, res) {
@@ -292,3 +294,61 @@ function compareFrame(img1) {
   res.end(''    + '<img src="' + canvas.toDataURL() + '" />');
 }).listen(3000);
 console.log('Server started on port 3000');*/
+
+var rec_user;
+var rec_interval;
+var rec_i = 0;
+
+function record_start(id){
+	rec_user = id;
+	// create temporary folder
+	var path = require('path');
+	fs.mkdir(path.join(__dirname,'rec_tmp',rec_user), function {
+		rec_interval=setInterval(record_loop,1000/30);
+	});
+}
+
+function record_loop(){
+	var path = require('path');
+	var out = fs.createWriteStream(path.join(__dirname,'rec_tmp',rec_user,zeroFill(rec_i,4)+".png"))
+	, stream = canvas.createPNGStream();
+
+	stream.on('data', function(chunk){
+		out.write(chunk);
+	});
+	
+	if (rec_i>30*10){
+		record_end();
+	}
+}
+
+function record_end(){
+	clearInterval(rec_interval);
+	rec_i = 0;
+	console.log("recording done");
+	/*
+	// encode images to video
+		var ffmpeg = require('fluent-ffmpeg');
+
+	// make sure you set the correct path to your video file
+	
+	//ffmpeg -r 1/5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p out.mp4
+	var proc = new ffmpeg({ source: '/tmp/'+rec_user+'/img%04d.jpg', nolog: true })
+ 	.withFps(30)
+  	.saveToFile('/path/to/your_target.m4v', function(retcode, error){
+    	console.log('video recorded succesfully');
+	});
+	
+	//remove temporary folder and files
+	*/
+} 
+
+function zeroFill( number, width )
+{
+  width -= number.toString().length;
+  if ( width > 0 )
+  {
+    return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+  }
+  return number + ""; // always return a string
+}
