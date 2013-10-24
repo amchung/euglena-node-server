@@ -316,13 +316,6 @@ function record_start(id){
 
 function record_loop(){
 	var path = require('path');
-//	var out = fs.createWriteStream(path.join(__dirname,'rec_tmp',rec_user,zeroFill(rec_i,4)+".png"))
-//	, stream = canvas.createPNGStream();
-
-/*	stream.on('data', function(chunk){
-		out.write(chunk);
-		console.log(" REC :::: "+"recording frame "+rec_i);
-	});*/
 	var img = canvas.toDataURL();
 	var data = img.replace(/^data:image\/\w+;base64,/, "");
 	var buf = new Buffer(data, 'base64');
@@ -331,11 +324,12 @@ function record_loop(){
 			throw err;
 		}
 		else {
-			console.log(" REC :::: "+"recording frame "+rec_i);
+			console.log(" REC :::: "+rec_user+" is recording frame "+rec_i);
 		}
 	});
 	
 	if (rec_i>30*3){
+		clearInterval(rec_interval);
 		record_end();
 	}
 	else{
@@ -344,24 +338,23 @@ function record_loop(){
 }
 
 function record_end(){
-	clearInterval(rec_interval);
 	rec_i = 0;
 	console.log(" REC :::: "+"recording done");
-	/*
+	
 	// encode images to video
 		var ffmpeg = require('fluent-ffmpeg');
 
 	// make sure you set the correct path to your video file
-	
+	var path = require('path');
 	//ffmpeg -r 1/5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p out.mp4
-	var proc = new ffmpeg({ source: '/tmp/'+rec_user+'/img%04d.jpg', nolog: true })
- 	.withFps(30)
-  	.saveToFile('/path/to/your_target.m4v', function(retcode, error){
+	var proc = new ffmpeg({ source: path.join(__dirname,'rec_tmp',rec_user,'img%04d'+".png"), nolog: true })
+ 		.withFps(30)
+  		.saveToFile(path.join(__dirname,'rec_tmp',rec_user+".mp4"), function(retcode, error){
     	console.log('video recorded succesfully');
 	});
 	
 	//remove temporary folder and files
-	*/
+	
 } 
 
 function zeroFill( number, width )
