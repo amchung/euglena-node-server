@@ -38,7 +38,7 @@ function takeSnapshot(){
             imagedata+= chunk; 
         });
         res.on('end', function(){
-        	var isoDate = timestamp.toISOString();
+        	var isoDate = new Date(timestamp).toISOString();
         	console.log("tmp/"+isoDate+".jpg");
         	var path = require('path');
         	var file = path.join(__dirname, 'tmp', isoDate+".jpg");
