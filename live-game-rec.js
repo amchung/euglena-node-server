@@ -347,7 +347,7 @@ function record_end(){
 	// make sure you set the correct path to your video file
 	var path = require('path');
 	//ffmpeg -r 1/5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p out.mp4
-	var proc = new ffmpeg({ source: path.join(__dirname,'rec_tmp',rec_user,'img%04d'+".png"), nolog: true })
+	var proc = new ffmpeg({ source: path.join(__dirname,'rec_tmp',rec_user,'%04d'+".png"), nolog: true })
  		.withFps(30)
   		.saveToFile(path.join(__dirname,'rec_tmp',rec_user+".mp4"), function(retcode, error){
   		if (error) {
