@@ -43,7 +43,7 @@ if (!module.parent) {
   					break;
   				case "reqRecord":
 					//start record
-					console.log(client.id+"::   REC request");
+					console.log(" REC :::: "+client.id+" requested");
 					rec_start(client.id);
   					break;
 				default:
@@ -303,8 +303,13 @@ function record_start(id){
 	rec_user = id;
 	// create temporary folder
 	var path = require('path');
-	fs.mkdir(path.join(__dirname,'rec_tmp',rec_user), function {
-		rec_interval=setInterval(record_loop,1000/30);
+	fs.mkdir(path.join(__dirname,'rec_tmp',rec_user), 0777, function (err){
+	    if (err) {
+        	console.log(err);
+    	} else {
+       		console.log(" REC :::: "+'Directory created');
+       		rec_interval=setInterval(record_loop,1000/30);
+    	}
 	});
 }
 
@@ -325,7 +330,7 @@ function record_loop(){
 function record_end(){
 	clearInterval(rec_interval);
 	rec_i = 0;
-	console.log("recording done");
+	console.log(" REC :::: "+"recording done");
 	/*
 	// encode images to video
 		var ffmpeg = require('fluent-ffmpeg');
