@@ -41,9 +41,9 @@ if (!module.parent) {
 						client.emit("postscore",  _.toArray(lists) );
 					});
   					break;
-  				case "reqframe":
-						client.emit("postframe",  canvas.toDataURL() );
-  					break;
+  				//case "reqframe":
+				//		client.emit("postframe",  canvas.toDataURL() );
+  				//	break;
 				default:
   					console.log("____err: received unknown input msg____");
 			}
@@ -52,6 +52,10 @@ if (!module.parent) {
         client.on('disconnect', function() {
             console.log("<< Disconnected :" + client.id);
         });
+        
+        setInterval(function(){
+ 			client.emit("postframe", canvas.toDataURL());
+		}, 1000/15);
     });
 }
 
@@ -76,10 +80,10 @@ var Canvas = require('canvas')
   Game Main Loop
 *******************************************************************************/
 
-var t_interval = 1000/6;
+var t_interval = 1000/30;
 var timestamp = 0;
-setInterval(gameLoop, t_interval);
-gameLoop();
+//setInterval(gameLoop, t_interval);
+//gameLoop();
   
 function gameLoop(){
 	timestamp = new Date().getTime();
