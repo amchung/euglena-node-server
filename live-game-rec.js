@@ -32,6 +32,9 @@ if (!module.parent) {
         client.on('message', function(msg) {
         	switch(msg.type)
 			{
+  				case "setUsername":
+  					console.log(" GAME ---- "+msg.user+" entered the room");
+  					break;
   				case "reqGame":
 					console.log(" GAME !!!! "+msg.user+" started!!");
 					resetGame(msg.user);
