@@ -81,27 +81,29 @@ if (!module.parent) {
 
 		function countDown(){
         	int_timer = int_timer - 1;
-        	if (int_timer > 0)
-        	{
-            	score_val = (Math.pow(scoreX-ObjX,2) + Math.pow(scoreY-ObjY,2))*10;
-        	}
-        	else
-        	{
-                clearTimeout(gametimer);
+        	if (int_timer >-1){
+        		if (int_timer > 0)
+        		{
+            		score_val = (Math.pow(scoreX-ObjX,2) + Math.pow(scoreY-ObjY,2))*10;
+        		}
+        		else
+        		{
+                	clearInterval(gametimer);
                 
-                list.zadd("myset", score_val , current_player);
+                	list.zadd("myset", score_val , current_player);
 					list.zrevrange("myset", 0 , 4, 'withscores', function(err,members){
 						var lists=_.groupBy(members,function(a,b){
 							return Math.floor(b/2);
 						});
 						console.log( _.toArray(lists) );
 						client.emit("postscore",  _.toArray(lists) );
-				});
+					});
                 
-            	int_timer=0;
-            	score_val = 0;
-            	ObjX = vid_width/2;
-            	ObjY = vid_height/2;
+            		int_timer= -1;
+            		score_val = -1;
+            		ObjX = vid_width/2;
+            		ObjY = vid_height/2;
+        		}
         	}
 		}
     });
