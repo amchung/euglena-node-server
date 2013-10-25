@@ -32,15 +32,9 @@ if (!module.parent) {
         client.on('message', function(msg) {
         	switch(msg.type)
 			{
-				case "sendscore":
-  					list.zadd("myset", msg.score , msg.user);
-					list.zrevrange("myset", 0 , 4, 'withscores', function(err,members){
-						var lists=_.groupBy(members,function(a,b){
-							return Math.floor(b/2);
-						});
-						console.log( _.toArray(lists) );
-						client.emit("postscore",  _.toArray(lists) );
-					});
+  				case "reqGame":
+					console.log(" GAME !!!! "+msg.user+" started!!");
+					resetGame(msg.user);
   					break;
   				case "reqRecord":
 					//start record
@@ -134,8 +128,12 @@ var ObjX = vid_width/2,
 	score_val = 0,
 	scoreX = ObjX,
     scoreY = ObjY;
-	
+    
+var int_timer=0;
+var max_timer=(1000/30)*4;
 var brown_const=0;
+var gametimer;
+var current_player;
 
 function drawBox(box_X,box_Y,box_L,totalRes){
     ctx.strokeStyle = ( totalRes > 0 ) ? "rgba(253,172,13,1)" : "rgba(250,102,0,1)";
@@ -150,7 +148,7 @@ function drawBox(box_X,box_Y,box_L,totalRes){
     ctx.moveTo(box_X,box_Y);
     
     // render timer
-    /*var enda = (2*Math.PI)*(int_timer/max_timer);
+    var enda = (2*Math.PI)*(int_timer/max_timer);
     ctx.arc(box_X,box_Y,box_L/4, 0, enda);
     ctx.fill();
         
@@ -164,7 +162,7 @@ function drawBox(box_X,box_Y,box_L,totalRes){
     	ctx.lineWidth = 1;
         ctx.lineTo(ObjX, ObjY);
         ctx.stroke();        
-    }*/
+    }
 }
 
 function resetBox(){
@@ -172,8 +170,9 @@ function resetBox(){
     ObjY = vid_height/2;
 }
 
-function resetGame(){
-    window.clearTimeout(gametimer);
+function resetGame(user){
+	current_player = user;
+    clearTimeout(gametimer);
         
     ObjX = vid_width/2;
     ObjY = vid_height/2;
@@ -183,17 +182,25 @@ function resetGame(){
     scoreY = ObjY;
         
     int_timer = max_timer;
-        
-	gametimer=requestAnimFrame(countDown);
+    
+    setInterval(countDown, t_interval);
 }
 
 function countDown(){
-        int_timer = int_timer - 0.1;
+        int_timer = int_timer - 1;
         if (int_timer > 0){
                 score_val = (Math.pow(scoreX-ObjX,2) + Math.pow(scoreY-ObjY,2))*10;
-                gametimer=requestAnimFrame(countDown);
         }else{
-                window.clearTimeout(gametimer);
+                clearTimeout(gametimer);
+                
+                list.zadd("myset", score_val , current_player);
+					list.zrevrange("myset", 0 , 4, 'withscores', function(err,members){
+						var lists=_.groupBy(members,function(a,b){
+							return Math.floor(b/2);
+						});
+						console.log( _.toArray(lists) );
+						client.emit("postscore",  _.toArray(lists) );
+				});
                 
                 var msg = {type:'sendscore', user:username, score:score_val};
                 socket.json.send(msg);
@@ -284,7 +291,7 @@ function compareFrame(img1) {
     drawBox(ObjX,ObjY,ObjL,res[0]+res[1]+res[2]+res[3]);
         
     ctx.fillStyle = 'white';
-	ctx.fillText('[ '+ timestamp +' ]    ObjX: '+(ObjX-vid_width/2)+'    ObjY: '+(ObjY-vid_height/2), 10, 10);
+	ctx.fillText('[ '+ timestamp +' ]    ObjX: '+(ObjX-vid_width/2)+'    ObjY: '+(ObjY-vid_height/2)+'    BrConst: '+brown_const, 10, 10);
   }
   // copy reference of img1 to img2
   img2 = img1;
