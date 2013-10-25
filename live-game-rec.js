@@ -47,6 +47,11 @@ if (!module.parent) {
 					console.log(" REC :::: "+client.id+" requested");
 					record_start(client.id);
   					break;
+  				case "setBrConst":
+					//start record
+					console.log(client.id+": set brown const to " msg.val);
+					brown_const = msg.val;
+  					break;
 				default:
   					console.log("____err: received unknown input msg____");
 			}
@@ -290,18 +295,13 @@ function compareFrame(img1) {
   Record Rendered Live Game Screen
 *******************************************************************************/
 
-/*screen_http.createServer(function (req, res) {
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.end(''    + '<img src="' + canvas.toDataURL() + '" />');
-}).listen(3000);
-console.log('Server started on port 3000');*/
-
 var rec_user;
 var rec_interval;
 var rec_i = 0;
 
 function record_start(id){
 	rec_user = id;
+	rec_i = 0;
 	// create temporary folder
 	var path = require('path');
 	fs.mkdir(path.join(__dirname,'rec_tmp',rec_user), 0777, function (err){
@@ -309,46 +309,47 @@ function record_start(id){
         	console.log(err);
     	} else {
        		console.log(" REC :::: "+'Directory created');
-       		rec_interval=setInterval(record_loop,1000/30);
+       		rec_interval=setInterval(record_loop, 1000/24);
     	}
 	});
 }
 
 function record_loop(){
-	var path = require('path');
-	var img = canvas.toDataURL();
-	var data = img.replace(/^data:image\/\w+;base64,/, "");
-	var buf = new Buffer(data, 'base64');
-	fs.writeFile(path.join(__dirname,'rec_tmp',rec_user,zeroFill(rec_i,4)+".png"),buf, function (err){
-		if (err) {
-			throw err;
-		}
-		else {
-			console.log(" REC :::: "+rec_user+" is recording frame "+rec_i);
-		}
-	});
+	if(rec_i>-1){
+		var path = require('path');
+		var img = canvas.toDataURL();
+		var data = img.replace(/^data:image\/\w+;base64,/, "");
+		var buf = new Buffer(data, 'base64');
+		fs.writeFile(path.join(__dirname,'rec_tmp',rec_user,zeroFill(rec_i,4)+".png"),buf, function (err){
+			if (err) {
+				throw err;
+			}
+			else {
+				console.log(" REC :::: "+rec_user+" is recording frame "+rec_i);
+			}
+		});
 	
-	if (rec_i>30*3){
-		clearInterval(rec_interval);
-		record_end();
-	}
+		if (rec_i>24*10){
+			record_end();
+		}
+		else{
+			rec_i = rec_i + 1;
+		}}
 	else{
-		rec_i = rec_i + 1;
+		// timer overflow
 	}
 }
 
 function record_end(){
-	rec_i = 0;
+	clearInterval(rec_interval);
+	rec_i = -1;
 	console.log(" REC :::: "+"recording done");
 	
 	// encode images to video
-		var ffmpeg = require('fluent-ffmpeg');
-
-	// make sure you set the correct path to your video file
+	var ffmpeg = require('fluent-ffmpeg');
 	var path = require('path');
-	//ffmpeg -r 1/5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p out.mp4
 	var proc = new ffmpeg({ source: path.join(__dirname,'rec_tmp',rec_user,'%04d'+".png"), nolog: true })
- 		.withFps(30)
+ 		.withFps(24)
   		.saveToFile(path.join(__dirname,'rec_tmp',rec_user+".mp4"), function(retcode, error){
   		if (error) {
 			throw error;
