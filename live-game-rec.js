@@ -202,7 +202,7 @@ function countDown(){
 						client.emit("postscore",  _.toArray(lists) );
 				});
                 
-                var msg = {type:'sendscore', user:username, score:score_val};
+                var msg = {type:'sendscore', user:current_player, score:score_val};
                 socket.json.send(msg);
                 
                 int_timer=0;
