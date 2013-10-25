@@ -48,8 +48,7 @@ if (!module.parent) {
 					record_start(client.id);
   					break;
   				case "setBrConst":
-					//start record
-					console.log(client.id+": set brown const to " msg.val);
+					console.log(client.id+": set brown const to "+ msg.val);
 					brown_const = msg.val;
   					break;
 				default:
