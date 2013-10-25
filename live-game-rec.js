@@ -205,9 +205,6 @@ function countDown(){
 						client.emit("postscore",  _.toArray(lists) );
 				});
                 
-                var msg = {type:'sendscore', user:current_player, score:score_val};
-                socket.json.send(msg);
-                
                 int_timer=0;
                 score_val = 0;
                 ObjX = vid_width/2;
