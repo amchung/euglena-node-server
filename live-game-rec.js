@@ -62,6 +62,48 @@ if (!module.parent) {
         	gameLoop();
  			client.emit("postframe", canvas.toDataURL());
 		}, t_interval);
+		
+		function resetGame(user){
+			current_player = user;
+    		clearTimeout(gametimer);
+        
+    		ObjX = vid_width/2;
+    		ObjY = vid_height/2;
+        
+    		score_val = 0;
+    		scoreX = ObjX;
+    		scoreY = ObjY;
+        
+    		int_timer = max_timer;
+    
+    		setInterval(countDown, t_interval);
+		}
+
+		function countDown(){
+        	int_timer = int_timer - 1;
+        	if (int_timer > 0)
+        	{
+            	score_val = (Math.pow(scoreX-ObjX,2) + Math.pow(scoreY-ObjY,2))*10;
+        	}
+        	else
+        	{
+                clearTimeout(gametimer);
+                
+                list.zadd("myset", score_val , current_player);
+					list.zrevrange("myset", 0 , 4, 'withscores', function(err,members){
+						var lists=_.groupBy(members,function(a,b){
+							return Math.floor(b/2);
+						});
+						console.log( _.toArray(lists) );
+						client.emit("postscore",  _.toArray(lists) );
+				});
+                
+            	int_timer=0;
+            	score_val = 0;
+            	ObjX = vid_width/2;
+            	ObjY = vid_height/2;
+        	}
+		}
     });
 }
 
@@ -171,45 +213,6 @@ function drawBox(box_X,box_Y,box_L,totalRes){
 function resetBox(){
     ObjX = vid_width/2;
     ObjY = vid_height/2;
-}
-
-function resetGame(user){
-	current_player = user;
-    clearTimeout(gametimer);
-        
-    ObjX = vid_width/2;
-    ObjY = vid_height/2;
-        
-    score_val = 0;
-    scoreX = ObjX;
-    scoreY = ObjY;
-        
-    int_timer = max_timer;
-    
-    setInterval(countDown, t_interval);
-}
-
-function countDown(){
-        int_timer = int_timer - 1;
-        if (int_timer > 0){
-                score_val = (Math.pow(scoreX-ObjX,2) + Math.pow(scoreY-ObjY,2))*10;
-        }else{
-                clearTimeout(gametimer);
-                
-                list.zadd("myset", score_val , current_player);
-					list.zrevrange("myset", 0 , 4, 'withscores', function(err,members){
-						var lists=_.groupBy(members,function(a,b){
-							return Math.floor(b/2);
-						});
-						console.log( _.toArray(lists) );
-						client.emit("postscore",  _.toArray(lists) );
-				});
-                
-                int_timer=0;
-                score_val = 0;
-                ObjX = vid_width/2;
-                ObjY = vid_height/2;
-        }
 }
 
 
