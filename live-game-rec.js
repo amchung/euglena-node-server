@@ -89,7 +89,8 @@ if (!module.parent) {
         		else
         		{
                 	clearInterval(gametimer);
-                
+                	var old_score = list.zrank("myset", current_player);
+                	score_val=(score_val>old_score)?score_val:old_score; 
                 	list.zadd("myset", score_val , current_player);
 					list.zrevrange("myset", 0 , 4, 'withscores', function(err,members){
 						var lists=_.groupBy(members,function(a,b){
@@ -194,7 +195,7 @@ function drawBox(box_X,box_Y,box_L,totalRes){
     ctx.beginPath();
     ctx.moveTo(box_X,box_Y);
         
-    if (score_val>0){
+    if (score_val>-1){
     	// game timer
     	var enda = (2*Math.PI)*(int_timer/max_timer);
     	ctx.arc(box_X,box_Y,box_L/4, 0, enda);
