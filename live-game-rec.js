@@ -130,7 +130,7 @@ var Canvas = require('canvas')
   Game Main Loop
 *******************************************************************************/
 
-var t_interval = 1000/30;
+var t_interval = 1000/15;
 var timestamp = 0;
 //setInterval(gameLoop, t_interval);
 //gameLoop();
@@ -177,7 +177,7 @@ var ObjX = vid_width/2,
     scoreY = ObjY;
     
 var int_timer=0;
-var max_timer=(1000/30)*4;
+var max_timer=t_interval*4;
 var brown_const=0;
 var gametimer;
 var current_player;
