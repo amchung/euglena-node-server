@@ -354,6 +354,7 @@ function record_loop(){
 function record_end(){
 	clearInterval(rec_interval);
 	rec_i = -1;
+	score_val = -1;
 	console.log(" REC :::: "+"recording done");
 	
 	// encode images to video
