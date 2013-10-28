@@ -193,13 +193,13 @@ function drawBox(box_X,box_Y,box_L,totalRes){
     ctx.fillStyle = "#f00";
     ctx.beginPath();
     ctx.moveTo(box_X,box_Y);
-    
-    // render timer
-    var enda = (2*Math.PI)*(int_timer/max_timer);
-    ctx.arc(box_X,box_Y,box_L/4, 0, enda);
-    ctx.fill();
         
     if (score_val>0){
+    	// game timer
+    	var enda = (2*Math.PI)*(int_timer/max_timer);
+    	ctx.arc(box_X,box_Y,box_L/4, 0, enda);
+    	ctx.fill();
+    
         ctx.beginPath();
         ctx.fillStyle = "#fff"; 
         ctx.fillText('score: +'+score_val,box_X - box_L/2, box_Y - box_L/2-10);
