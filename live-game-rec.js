@@ -56,12 +56,6 @@ if (!module.parent) {
         client.on('disconnect', function() {
             console.log("<< Disconnected :" + client.id);
         });
-        
-        setInterval(function(){
-        	console.log("postframe");
-        	gameLoop();
- 			//client.emit("postframe", canvas.toDataURL());
-		}, t_interval);
 		
 		function resetGame(user){
 			current_player = user;
@@ -109,6 +103,12 @@ if (!module.parent) {
 		}
     });
 }
+
+setInterval(function(){
+    console.log("postframe");
+    gameLoop();
+ 	//client.emit("postframe", canvas.toDataURL());
+}, t_interval);
 
 
 
