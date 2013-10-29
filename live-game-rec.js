@@ -306,6 +306,7 @@ function compareFrame(img1) {
   , stream = canvas.createPNGStream();
 
 	stream.on('data', function(chunk){
+		console.log('stream written');
   		out.write(chunk);
   	});
 }
