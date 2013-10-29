@@ -15,6 +15,12 @@ const fs  = require('fs');
 
 const HOST = '171.65.102.132';
 
+setInterval(function(){
+    console.log("postframe");
+    gameLoop();
+ 	//client.emit("postframe", canvas.toDataURL());
+}, t_interval);
+
 if (!module.parent) {
     server.listen(3001, HOST);
     const socket  = io.listen(server);
@@ -103,14 +109,6 @@ if (!module.parent) {
 		}
     });
 }
-
-setInterval(function(){
-    console.log("postframe");
-    gameLoop();
- 	//client.emit("postframe", canvas.toDataURL());
-}, t_interval);
-
-
 
 /**
  * Module dependencies.
