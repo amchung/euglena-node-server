@@ -58,7 +58,7 @@ if (!module.parent) {
         });
         
         setInterval(function(){
-        	//console.log("postframe");
+        	console.log("postframe");
         	gameLoop();
  			//client.emit("postframe", canvas.toDataURL());
 		}, t_interval);
