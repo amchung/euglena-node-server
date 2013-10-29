@@ -60,7 +60,7 @@ if (!module.parent) {
         setInterval(function(){
         	//console.log("postframe");
         	gameLoop();
- 			client.emit("postframe", canvas.toDataURL());
+ 			//client.emit("postframe", canvas.toDataURL());
 		}, t_interval);
 		
 		function resetGame(user){
@@ -301,6 +301,13 @@ function compareFrame(img1) {
   }
   // copy reference of img1 to img2
   img2 = img1;
+  
+  var out = fs.createWriteStream(__dirname + '/tmp/frame.png')
+  , stream = canvas.createPNGStream();
+
+	stream.on('data', function(chunk){
+  		out.write(chunk);
+  	});
 }
 
 /*******************************************************************************
