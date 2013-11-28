@@ -13,8 +13,8 @@ var app = express();
   Show Euglena Live Screen Gallery
 *******************************************************************************/
 
-app.use(express.static(__dirname + '/tmp'));
-app.use(express.directory(__dirname + '/tmp'));
+app.use(express.static('../../Dropbox/live-gallery'));
+app.use(express.directory('../../Dropbox/live-gallery'));
 app.get('/', function(req, res) {
 	res.send('hello world');
 });
@@ -39,9 +39,9 @@ function takeSnapshot(){
         });
         res.on('end', function(){
         	var isoDate = new Date(timestamp).toISOString();
-        	console.log("tmp/"+isoDate+".jpg");
+        	console.log("live-gallery/"+isoDate+".jpg");
         	var path = require('path');
-        	var file = path.join(__dirname, 'tmp', isoDate+".jpg");
+        	var file = path.join('../../Dropbox', 'live-gallery', isoDate+".jpg");
             fs.writeFile(file, imagedata, 'binary');
         });
     }).on('error', function(e) {
